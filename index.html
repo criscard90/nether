@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Video Loop con Banda Nera</title>
+  <style>
+    /* Reset totale */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Sfondo nero su tutta la pagina */
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+      display: flex;
+      flex-direction: column; /* Organizza gli elementi in verticale */
+    }
+
+    /* Contenitore per lo spazio vuoto (la banda nera) */
+    .spacer {
+      width: 100%;
+      height: 10vh; /* OCCUPA IL 10% DELL'ALTEZZA DELLO SCHERMO (VIEWPORT HEIGHT) */
+      background-color: #000; /* Nero come lo sfondo */
+    }
+
+    /* Il video occupa il resto dello schermo */
+    video {
+      width: 100vw;  /* Tutta la larghezza */
+      height: 90vh; /* OCCUPA IL RESTANTE 90% DELL'ALTEZZA DELLO SCHERMO */
+      object-fit: cover; /* Riempie lo spazio senza deformare */
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Questo elemento crea il vuoto in alto -->
+  <div class="spacer"></div>
+
+  <!-- Il tuo video in loop -->
+  <video autoplay muted loop playsinline id="myVideo">
+    <source src="loop.mp4" type="video/mp4">
+    Il tuo browser non supporta il tag video HTML5.
+  </video>
+
+</body>
+</html>
+
