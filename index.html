@@ -2,11 +2,13 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"> 
-  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>GIF Loop</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
+
   <style>
-    /* Reset totale di margini e blocco dello scroll */
     * {
       margin: 0;
       padding: 0;
@@ -18,34 +20,63 @@
       overflow: hidden;
       background-color: #000;
       display: flex;
-      flex-direction: column; /* Impila la banda nera e la GIF in verticale */
+      flex-direction: column;
     }
-
-    /* Banda nera in alto (10% dell'altezza dello schermo) */
     .spacer {
       width: 100%;
       height: 10vh;
       background-color: #000;
     }
-
-    /* La GIF occupa il restante 90% dell'altezza dello schermo */
     img.gif-loop {
       width: 100vw;
       height: 90vh;
-      /* 'cover' riempie tutto lo spazio senza deformare l'immagine */
-      /* Se preferisci vedere l'immagine intera senza ritagli, usa 'contain' */
       object-fit: cover;
       display: block;
     }
+
+    /* Messaggio discreto per invitare al primo tap */
+    #fs-banner {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-family: sans-serif;
+      font-size: 0.8rem;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 99;
+    }
+    .hidden { opacity: 0; }
   </style>
 </head>
 <body>
 
-  <!-- Spazio per la banda nera in alto -->
   <div class="spacer"></div>
-
-  <!-- La tua GIF (assicurati che il nome del file corrisponda a quello su GitHub) -->
   <img src="loop.gif" class="gif-loop" alt="GIF Loop">
 
+  <div id="fs-banner">Tocca lo schermo per tutto schermo</div>
+
+  <script>
+    // Funzione per attivare il fullscreen reale del browser
+    function requestFullscreen() {
+      const docElement = document.documentElement;
+      if (docElement.requestFullscreen) {
+        docElement.requestFullscreen();
+      } else if (docElement.webkitRequestFullscreen) { // Per compatibilità
+        docElement.webkitRequestFullscreen();
+      }
+      const banner = document.getElementById('fs-banner');
+      if (banner) banner.classList.add('hidden');
+    }
+
+    // Al primo tocco ovunque nello schermo, nasconde la barra di Android
+    document.body.addEventListener('click', requestFullscreen);
+    document.body.addEventListener('touchstart', requestFullscreen);
+    
+  </script>
 </body>
 </html>
