@@ -3,51 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Video Loop con Banda Nera</title>
+  <title>Video Loop</title>
   <style>
-    /* Reset totale */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    /* Sfondo nero su tutta la pagina */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
       background-color: #000;
       display: flex;
-      flex-direction: column; /* Organizza gli elementi in verticale */
+      flex-direction: column;
     }
-
-    /* Contenitore per lo spazio vuoto (la banda nera) */
     .spacer {
       width: 100%;
-      height: 10vh; /* OCCUPA IL 10% DELL'ALTEZZA DELLO SCHERMO (VIEWPORT HEIGHT) */
-      background-color: #000; /* Nero come lo sfondo */
+      height: 10vh;
+      background-color: #000;
     }
-
-    /* Il video occupa il resto dello schermo */
     video {
-      width: 100vw;  /* Tutta la larghezza */
-      height: 90vh; /* OCCUPA IL RESTANTE 90% DELL'ALTEZZA DELLO SCHERMO */
-      object-fit: cover; /* Riempie lo spazio senza deformare */
+      width: 100vw;
+      height: 90vh;
+      object-fit: cover;
       display: block;
     }
+    /* Overlay trasparente per sbloccare il video se l'autoplay viene bloccato */
+    #play-overlay {
+      position: fixed;
+      top: 10vh;
+      left: 0;
+      width: 100vw;
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      font-family: sans-serif;
+      font-size: 1.2rem;
+      z-index: 10;
+    }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- Questo elemento crea il vuoto in alto -->
   <div class="spacer"></div>
 
-  <!-- Il tuo video in loop -->
-  <video autoplay muted loop playsinline id="myVideo">
+  <!-- Riquadro di sblocco visibile solo se l'autoplay fallisce -->
+  <div id="play-overlay">Tocca lo schermo per avviare</div>
+
+  <!-- Usa attributi espliciti per massimizzare la compatibilità mobile -->
+  <video id="myVideo" autoplay muted loop playsinline webkit-playsinline preload="auto">
     <source src="loop.mp4" type="video/mp4">
-    Il tuo browser non supporta il tag video HTML5.
   </video>
 
+  <script>
+    const video = document.getElementById('myVideo');
+    const overlay = document.getElementById('play-overlay');
+
+    // Tenta l'avvio automatico appena caricato
+    function startVideo() {
+      video.play().then(() => {
+        overlay.classList.add('hidden');
+      }).catch(() => {
+        // Se il browser blocca l'autoplay, mostra l'overlay per il tap
+        overlay.classList.remove('hidden');
+      });
+    }
+
+    // Se l'utente tocca lo schermo, avvia il video e nasconde l'overlay
+    document.body.addEventListener('click', () => {
+      video.play();
+      overlay.classList.add('hidden');
+    });
+
+    window.addEventListener('DOMContentLoaded', startVideo);
+  </script>
 </body>
 </html>
 
