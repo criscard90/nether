@@ -3,81 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Video Loop</title>
+  <title>GIF Loop</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Reset totale di margini e blocco dello scroll */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
       background-color: #000;
       display: flex;
-      flex-direction: column;
+      flex-direction: column; /* Impila la banda nera e la GIF in verticale */
     }
+
+    /* Banda nera in alto (10% dell'altezza dello schermo) */
     .spacer {
       width: 100%;
       height: 10vh;
       background-color: #000;
     }
-    video {
+
+    /* La GIF occupa il restante 90% dell'altezza dello schermo */
+    img.gif-loop {
       width: 100vw;
       height: 90vh;
+      /* 'cover' riempie tutto lo spazio senza deformare l'immagine */
+      /* Se preferisci vedere l'immagine intera senza ritagli, usa 'contain' */
       object-fit: cover;
       display: block;
     }
-    /* Overlay trasparente per sbloccare il video se l'autoplay viene bloccato */
-    #play-overlay {
-      position: fixed;
-      top: 10vh;
-      left: 0;
-      width: 100vw;
-      height: 90vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.5);
-      color: white;
-      font-family: sans-serif;
-      font-size: 1.2rem;
-      z-index: 10;
-    }
-    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
+  <!-- Spazio per la banda nera in alto -->
   <div class="spacer"></div>
 
-  <!-- Riquadro di sblocco visibile solo se l'autoplay fallisce -->
-  <div id="play-overlay">Tocca lo schermo per avviare</div>
+  <!-- La tua GIF (assicurati che il nome del file corrisponda a quello su GitHub) -->
+  <img src="loop.gif" class="gif-loop" alt="GIF Loop">
 
-  <!-- Usa attributi espliciti per massimizzare la compatibilità mobile -->
-  <video id="myVideo" autoplay muted loop playsinline webkit-playsinline preload="auto">
-    <source src="loop.mp4" type="video/mp4">
-  </video>
-
-  <script>
-    const video = document.getElementById('myVideo');
-    const overlay = document.getElementById('play-overlay');
-
-    // Tenta l'avvio automatico appena caricato
-    function startVideo() {
-      video.play().then(() => {
-        overlay.classList.add('hidden');
-      }).catch(() => {
-        // Se il browser blocca l'autoplay, mostra l'overlay per il tap
-        overlay.classList.remove('hidden');
-      });
-    }
-
-    // Se l'utente tocca lo schermo, avvia il video e nasconde l'overlay
-    document.body.addEventListener('click', () => {
-      video.play();
-      overlay.classList.add('hidden');
-    });
-
-    window.addEventListener('DOMContentLoaded', startVideo);
-  </script>
 </body>
 </html>
-
