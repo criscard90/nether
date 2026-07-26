@@ -76,6 +76,12 @@
     // Al primo tocco ovunque nello schermo, nasconde la barra di Android
     document.body.addEventListener('click', requestFullscreen);
     document.body.addEventListener('touchstart', requestFullscreen);
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
     
   </script>
 </body>
